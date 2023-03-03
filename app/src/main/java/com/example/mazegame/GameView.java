@@ -271,7 +271,7 @@ public class GameView extends View {
             float absDx = Math.abs(dx);
             float absDy = Math.abs(dy);
 
-            if(absDx > cellSize || absDy > cellSize){
+            if(absDx > cellSize/4 || absDy > cellSize/4){
                 if(absDx > absDy){
                     //move in x direction
                     if(dx > 0){
