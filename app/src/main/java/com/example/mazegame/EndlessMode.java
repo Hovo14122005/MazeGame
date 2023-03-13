@@ -7,6 +7,9 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -14,22 +17,23 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Stack;
 
-public class GameView extends View {
+public class EndlessMode extends View {
 
     private enum Direction{
         UP, DOWN, LEFT, RIGHT
     }
 
+    private int level = 1;
     private Cell[][] cells;
     private Cell player, exit;
-    private static /*final*/ int COLS = 1 , ROWS = 2;
+    private static int COLS = 1 , ROWS = 2;
     private static final float WALL_THICKNESS = 4;
     private float cellSize, hMargin, vMargin;
     private Paint wallPaint, playerPaint, exitPaint;
     private Random random;
 
 
-    public GameView(Context context, @Nullable AttributeSet attrs) {
+    public EndlessMode(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
         wallPaint = new Paint();
@@ -108,14 +112,14 @@ public class GameView extends View {
     }
 
     private void createMaze(){
+        /*TextView endlessLevelText = (TextView) findViewById(R.id.levelTextView);
+        endlessLevelText.setText(Integer.toString(level++));*/
+
+
         Stack<Cell> stack = new Stack<>();
         Cell current, next;
-        if(COLS == 1){
-            COLS *= 2; ROWS *= 2;
-        }
-        else{
-            COLS *= 1.5; ROWS *= 1.5;
-        }
+
+        COLS += 1; ROWS += 2;
 
         cells = new Cell[COLS][ROWS];
 
@@ -145,12 +149,11 @@ public class GameView extends View {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.drawColor(Color.GREEN);
 
         int width = getWidth();
         int height = getHeight();
 
-        if(width/height < COLS/ROWS)
+        if(height != 0 && width/height < COLS/ROWS)
             cellSize = width/(COLS + 1);
         else
             cellSize = height/(ROWS + 1);
@@ -271,7 +274,7 @@ public class GameView extends View {
             float absDx = Math.abs(dx);
             float absDy = Math.abs(dy);
 
-            if(absDx > cellSize/4 || absDy > cellSize/4){
+            if(absDx > cellSize/2 || absDy > cellSize/2){
                 if(absDx > absDy){
                     //move in x direction
                     if(dx > 0){
